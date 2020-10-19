@@ -5,7 +5,7 @@
     background-size: cover;
 }
 
-.display-4 {
+#page-title{
     font-weight: bolder;
     color: #0f3057;
     text-align: center;
@@ -19,14 +19,25 @@ body {
 .search-header {
     font-weight: bolder;
     color: #0f3057;
+    padding-top: 10px;
 }
 
-.col-4 {
+#search-section {
     background-color: #5ba4e7;
+    border: #0f3057;
+    /* margin: 1px; */
+    padding-bottom: 10px;
 }
 
-.col-12 {
+#current {
     background-color: #5ba4e7;
+    color: #0f3057;
+    border: #0f3057;
+    /* margin: 1px; */
+}
+#forecast{
+    background-color: #5ba4e7;
+    border: #0f3057;
 }
 
 #five-days {

@@ -1,17 +1,11 @@
 $(document).ready(function () {
     // Page elements
-    //var forecastEl = document.querySelector("#forecast-data");
     var inputEl = document.querySelector(".search-city");
     var searchEl = document.querySelector(".search-button");
     var clearEl = document.querySelector("#clear-history");
-    
-    //var cityNameEl = document.querySelector("#city-name");
-    //var pictureEl = document.querySelector("#current-pic");
+
     var historyEl = document.querySelector("#history");
-    //var temperatureEl = document.querySelector("#temperature");
-    //var humidityEl = document.querySelector("#humidity");
-    //var windEl = document.querySelector("#wind");
-    //var uvEl = document.querySelector("#UV-index");
+
     // search history list
     var searchHistory = JSON.parse(window.localStorage.getItem("search")) || [];
     console.log(searchHistory);
@@ -20,7 +14,8 @@ $(document).ready(function () {
 
 
 
-    // function to get the weather with city name
+
+    // function to get current weather given the city name
     function getWeather(cityName) {
         //  URL link
         var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=" + APIKey;
@@ -28,6 +23,7 @@ $(document).ready(function () {
             url: queryURL,
             method: "GET"
         }).then(function (response) {
+            $("#current").empty();
             // create the html elements for the current weather forecast
             // <!-- <div class="row"> <div class="col-12 m-3"><div class="row"><div class="col-12 forecast-city"> 
             var row = $("<div>").addClass("class = 'row' ");
@@ -35,9 +31,9 @@ $(document).ready(function () {
             var titleRow = $("<div>").addClass("class = 'row'");
             var titleCol = $("<div>").addClass("class = 'col forecast-city' ");
             // append these elements in the same row
-            $(row).append(cols, titleRow,titleCol);
+            $(row).append(cols, titleRow, titleCol);
             // append elements in the page
-            $("#forecast-data").append(row);
+            $("#current").append(row);
 
             // current date using moment.js
             var currentDate = moment().format('dddd, MMMM Do');
@@ -68,8 +64,8 @@ $(document).ready(function () {
             var windEl = $("<div>").addClass("class = 'col-12'");
             $(windEl).html("Current Wind Speed: " + response.wind.speed + "MPH");
             $(windDiv).append(windEl);
-            $(cols).append(tempDiv, humidDiv, windDiv);
-            $("#forecast-data").append(cols);
+            // $(cols).append(tempDiv, humidDiv, windDiv);
+            //$("#current").append(cols);
             // get UV- index
             // get langtitude and longtitude
             var lat = response.coord.lat;
@@ -107,8 +103,8 @@ $(document).ready(function () {
                 // add elements to the page
                 $(uvEl).html("UV-Index: ");
                 $(uvEl).append(uvIndex);
-                $(cols).append(uvDiv);
-                $("#forecast-data").append(cols);
+                $(cols).append(tempDiv, humidDiv, windDiv, uvDiv);
+                $("#current").append(cols);
             });
         });
     };
