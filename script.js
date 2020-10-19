@@ -1,16 +1,17 @@
 $(document).ready(function () {
     // Page elements
-    var forecastEl = document.querySelector("#forecast-data");
+    //var forecastEl = document.querySelector("#forecast-data");
     var inputEl = document.querySelector(".search-city");
     var searchEl = document.querySelector(".search-button");
     var clearEl = document.querySelector("#clear-history");
-    var cityNameEl = document.querySelector("#city-name");
-    var pictureEl = document.querySelector("#current-pic");
+    
+    //var cityNameEl = document.querySelector("#city-name");
+    //var pictureEl = document.querySelector("#current-pic");
     var historyEl = document.querySelector("#history");
-    var temperatureEl = document.querySelector("#temperature");
-    var humidityEl = document.querySelector("#humidity");
-    var windEl = document.querySelector("#wind");
-    var uvEl = document.querySelector("#UV-index");
+    //var temperatureEl = document.querySelector("#temperature");
+    //var humidityEl = document.querySelector("#humidity");
+    //var windEl = document.querySelector("#wind");
+    //var uvEl = document.querySelector("#UV-index");
     // search history list
     var searchHistory = JSON.parse(window.localStorage.getItem("search")) || [];
     console.log(searchHistory);
@@ -27,37 +28,74 @@ $(document).ready(function () {
             url: queryURL,
             method: "GET"
         }).then(function (response) {
+            // create the html elements for the current weather forecast
+            // <!-- <div class="row"> <div class="col-12 m-3"><div class="row"><div class="col-12 forecast-city"> 
+            var row = $("<div>").addClass("class = 'row' ");
+            var cols = $("<div>").addClass("class = 'col-12 m-3'");
+            var titleRow = $("<div>").addClass("class = 'row'");
+            var titleCol = $("<div>").addClass("class = 'col forecast-city' ");
+            // append these elements in the same row
+            $(row).append(cols, titleRow,titleCol);
+            // append elements in the page
+            $("#forecast-data").append(row);
+
+            // current date using moment.js
             var currentDate = moment().format('dddd, MMMM Do');
-            console.log(currentDate);
+            //console.log(currentDate);
+            // create html element for the name of the city and date
+            var cityNameEl = $("<h3>").addClass("class='mt-3'");
             $(cityNameEl).html(response.name + " (" + currentDate + " )");
+            // append element in the tittle element
+            $(titleCol).append(cityNameEl);
             // get weather Icon and set it in the page
             var weatherIcon = response.weather[0].icon;
+            // img html element
+            var pictureEl = $("<img>");
             $(pictureEl).attr("src", "https://openweathermap.org/img/wn/" + weatherIcon + "@2x.png")
+            $(cityNameEl).append(pictureEl);
             // get temperature
+            var tempDiv = $("<div>").addClass("class = 'row'");
+            var temperatureEl = $("<div>").addClass("class = 'col-12'");
             $(temperatureEl).html("Current Temperature: " + kelvinToFahren(response.main.temp) + "°F");
+            $(tempDiv).append(temperatureEl);
             // get humidity
+            var humidDiv = $("<div>").addClass("class = 'row'");
+            var humidityEl = $("<div>").addClass("class = 'col-12'");
             $(humidityEl).html("Current Humidity: " + response.main.humidity + "%");
+            $(humidDiv).append(humidityEl);
             // get wind speed
+            var windDiv = $("<div>").addClass("class = 'row'");
+            var windEl = $("<div>").addClass("class = 'col-12'");
             $(windEl).html("Current Wind Speed: " + response.wind.speed + "MPH");
-
+            $(windDiv).append(windEl);
+            $(cols).append(tempDiv, humidDiv, windDiv);
+            $("#forecast-data").append(cols);
             // get UV- index
             // get langtitude and longtitude
             var lat = response.coord.lat;
             var lon = response.coord.lon;
-            // we need a query that takes latitude and longitude
+            // query url that takes latitude and longitude
             var UVQueryURL = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&appid=" + APIKey;
 
             $.ajax({
                 url: UVQueryURL,
                 method: "GET"
             }).then(function (response) {
+                // create a span element
+                var uvDiv = $("<div>").addClass("class = 'row'");
+                var uvEl = $("<div>").addClass("class = 'col-12'");
+                $(uvDiv).append(uvEl);
                 var uvIndex = $("<span>");
+                // add attributes to the element created
                 $(uvIndex).attr("class", "badge");
+                // get the UV-index value
                 var UVvalue = response.current.uvi;
+                // set uv-value to the html element
                 $(uvIndex).html(UVvalue);
 
                 // change color depending on uv index value
                 if (UVvalue < 3) {
+                    // add class to the span
                     uvIndex.addClass("btn-success");
                 }
                 else if (UVvalue < 7) {
@@ -66,14 +104,18 @@ $(document).ready(function () {
                 else {
                     uvIndex.addClass("btn-danger");
                 }
+                // add elements to the page
                 $(uvEl).html("UV-Index: ");
                 $(uvEl).append(uvIndex);
+                $(cols).append(uvDiv);
+                $("#forecast-data").append(cols);
             });
         });
     };
 
     // create 5 days weather forecast
     function fiveDaysForecast(cityName) {
+        // query url for the 5 days forecast
         var queryURL = "https://api.openweathermap.org/data/2.5/forecast?q=" + cityName + "&appid=" + APIKey;
 
         $.ajax({
@@ -82,31 +124,31 @@ $(document).ready(function () {
         }).then(function (response) {
             // overwrite any existing content with title and empty row
             $("#five-days").html("<h3 class='mt-3'>5-Day Forecast:</h3>").append("<div class='row'>");
-            //var forecast5 = $("<div>").addClass("")
             // loop over all forecasts (by 3-hour increments)
             for (var i = 0; i < response.list.length; i++) {
-                // only look at forecasts around 3:00pm
+                // only take forecasts of that match 15:00
                 if (response.list[i].dt_txt.indexOf("15:00:00") !== -1) {
                     // create html elements for a bootstrap card
-                    // col-12 m-3    col-md-2 ml-3 mb-3
                     var col = $("<div>").addClass("col-md-2 ml-3 mb-3");
+                    // create cards for each day forecast
                     var card = $("<div>").addClass("card text-white bg-color");
                     var body = $("<div>").addClass("card-body p-2");
-
+                    // add title with the date
                     var title = $("<h5>").addClass("card-title").text(new Date(response.list[i].dt_txt).toLocaleDateString());
-
+                    // add icon weather
                     var img = $("<img>").attr("src", "http://openweathermap.org/img/w/" + response.list[i].weather[0].icon + ".png");
-
-                    var p1 = $("<p>").addClass("card-text").text("Temp: " + response.list[i].main.temp_max + " °F");
+                    // add temperature
+                    var p1 = $("<p>").addClass("card-text").text("Temp: " + kelvinToFahren(response.list[i].main.temp_max) + " °F");
+                    // add humidity
                     var p2 = $("<p>").addClass("card-text").text("Humidity: " + response.list[i].main.humidity + "%");
 
-                    // merge together and put on page
+                    // append elements in the page
                     col.append(card.append(body.append(title, img, p1, p2)));
                     $("#five-days .row").append(col);
-                }
-            }
-        })
-    }
+                };
+            };
+        });
+    };
 
     // convert the temperature from Kelvin into Fahrenheit
     function kelvinToFahren(k) {
@@ -118,6 +160,7 @@ $(document).ready(function () {
     function createSearchHistory() {
         $(historyEl).html = "";
         for (var i = 0; i < searchHistory.length; i++) {
+            // create input element and give attributes to it
             //<input type="text" readonly class="form-control d-block">
             var historyItem = $("<input>");
             $(historyItem).attr("type", "text");
@@ -126,9 +169,10 @@ $(document).ready(function () {
             //console.log(searchHistory[i]);
             $(historyItem).on("click", function () {
                 getWeather(searchHistory.value);
-                fiveDaysForecast(searchHistory.value)
+                fiveDaysForecast(searchHistory.value);
             });
         };
+        // append to the page 
         $(historyEl).append(historyItem);
     };
 
@@ -152,7 +196,7 @@ $(document).ready(function () {
         searchHistory = [];
         $(historyEl).empty();
         // $(forecastEl).empty();
-         createSearchHistory();
+        createSearchHistory();
     });
 
     // call of the function so when the page loads 
