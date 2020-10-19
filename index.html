@@ -25,6 +25,7 @@
         </div>
     </header>
     <main>
+        <!-- Search container -->
         <div class="container">
             <div class="row">
                 <div class="col-4">
@@ -37,9 +38,10 @@
                     <button class="btn btn-outline-light mb-3" type="button" id="clear-history">Clear history</button>
                     <form id="history"></form>
                 </div>
-                <div class="col-8">
-                    <div class="row">
-                        <div class="col-12 m-3 ">
+                 <!-- Current weather -->
+                <div class="col-8" id = "forecast-data">
+                    <div class="row" >
+                        <div class="col-12 m-3">
                             <div class="row">
                                 <div class="col-12">
                                     <span id="city-name" class="city-name align-middle"></span>
@@ -68,17 +70,18 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-12 m-3">
+                    <!-- 5 days Forecast-->
+                    <div class="row" id = "five-days">
+                        <!-- <div class="col-12 m-3">
                             <h3 class="five-day">5-Day Forecast</h3>
                             <div class="row">
-                                <div class="col forecast text-white ml-3 mb-3 rounded">1</div>
+                                <div class="col forecast text-white ml-3 mb-3 rounded"></div>
                                 <div class="col forecast text-white ml-3 mb-3 rounded"></div>
                                 <div class="col forecast text-white ml-3 mb-3 rounded"></div>
                                 <div class="col forecast text-white ml-3 mb-3 rounded"></div>
                                 <div class="col forecast text-white ml-3 mb-3 rounded"></div>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>

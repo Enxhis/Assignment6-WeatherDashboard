@@ -11,25 +11,35 @@
     text-align: center;
 }
 
-body{
+body {
     /* background-color: #07689f; */
     background-color: #1366b4;
 }
-.search-header{
+
+.search-header {
     font-weight: bolder;
     color: #0f3057;
-}
-.col-4{
-    background-color:#5ba4e7;
 }
 
-.col-12{
-    background-color:#5ba4e7;
+.col-4 {
+    background-color: #5ba4e7;
 }
-.five-day{
+
+.col-12 {
+    background-color: #5ba4e7;
+}
+
+#five-days {
+    margin: 10px;
     font-weight: bolder;
     color: #0f3057;
 }
-.col{
-    background-color:#5ba4e7;
+
+.col-md-2 {
+    background-color: #5ba4e7;
+}
+
+.bg-color {
+    background-color: #5ba4e7;
+    outline: none;
 }
