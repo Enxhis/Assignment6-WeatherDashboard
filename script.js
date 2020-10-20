@@ -9,7 +9,13 @@ $(document).ready(function () {
     console.log(searchHistory);
     //  API key
     var APIKey = "9fdc5bc55f80a81fe029c792d50c8f7d";
-
+    
+    // if 
+    if(searchHistory.length === 0){
+        $("#current").hide();
+        $("#forecast").hide();
+    }
+    
 
     // function to get current weather given the city name
     function getWeather(cityName) {
@@ -179,6 +185,8 @@ $(document).ready(function () {
     // adds every seach into the list and local storage
     $(searchEl).on("click", function () {
         var search = $(inputEl).val();
+        $("#current").show();
+        $("#forecast").show();
         getWeather(search);
         fiveDaysForecast(search)
         searchHistory.push(search);
@@ -201,6 +209,7 @@ $(document).ready(function () {
     // call of the function so when the page loads 
     // to present the last searched city forecast
     createSearchHistory();
+    //$("#current").show();
     // If the list is not empty it loads in the page the last element searched
     //so it gives the weather of the last searched element
     if (searchHistory.length > 0) {
