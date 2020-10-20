@@ -166,8 +166,9 @@ $(document).ready(function () {
             $(historyItem).attr("value", searchHistory[i]);
             //console.log(searchHistory[i]);
             $(historyItem).on("click", function () {
-                getWeather(searchHistory.value);
-                fiveDaysForecast(searchHistory.value);
+                var data = $(historyItem).val().trim();
+                getWeather(data);
+                fiveDaysForecast(data);
             });
         }
         // append to the page 
