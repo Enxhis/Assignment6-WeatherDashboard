@@ -119,13 +119,13 @@ $(document).ready(function () {
             method: "GET"
         }).then(function (response) {
             // overwrite any existing content with title and empty row
-            $("#five-days").html("<h3 class='mt-3'>5-Day Forecast:</h3>").append("<div class='row'>");
+            $("#five-days").html("<h3 class='mt-3'>5-Day Forecast</h3>").append("<div class='row'>");
             // loop over all forecasts (by 3-hour increments)
             for (var i = 0; i < response.list.length; i++) {
                 // only take forecasts of that match 15:00
                 if (response.list[i].dt_txt.indexOf("15:00:00") !== -1) {
                     // create html elements for a bootstrap card
-                    var col = $("<div>").addClass("col-md-2 ml-3 mb-3");
+                    var col = $("<div>").addClass("col-sm-2 ml-1 mt-1");
                     // create cards for each day forecast
                     var card = $("<div>").addClass("card text-white bg-color");
                     var body = $("<div>").addClass("card-body p-2");

@@ -30,27 +30,27 @@ body {
 }
 
 #current {
-    background-color: #5ba4e7;
+    background-color:#5ba4e7;
     color: #0f3057;
     border: #0f3057;
-    /* margin: 1px; */
+    padding-bottom: 10px;
+    margin: 5px;
+    height: 250px;
 }
 #forecast{
     background-color: #5ba4e7;
     border: #0f3057;
+    margin: 5px;
 }
 
 #five-days {
-    margin: 10px;
+    /* margin: 5px; */
     font-weight: bolder;
     color: #0f3057;
-}
-
-.col-md-2 {
-    background-color: #5ba4e7;
+    padding: 10px;
 }
 
 .bg-color {
     background-color: #5ba4e7;
-    outline: none;
+    outline: #0f3057;
 }
