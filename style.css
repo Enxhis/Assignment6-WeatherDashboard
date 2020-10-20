@@ -49,8 +49,11 @@ body {
     color: #0f3057;
     padding: 10px;
 }
-
+.card-title{
+    font-size: 15px;
+}
 .bg-color {
     background-color: #5ba4e7;
     outline: #0f3057;
+    outline-width: 1px;
 }

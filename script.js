@@ -3,16 +3,12 @@ $(document).ready(function () {
     var inputEl = document.querySelector(".search-city");
     var searchEl = document.querySelector(".search-button");
     var clearEl = document.querySelector("#clear-history");
-
     var historyEl = document.querySelector("#history");
-
     // search history list
     var searchHistory = JSON.parse(window.localStorage.getItem("search")) || [];
     console.log(searchHistory);
     //  API key
     var APIKey = "9fdc5bc55f80a81fe029c792d50c8f7d";
-
-
 
 
     // function to get current weather given the city name
@@ -30,6 +26,7 @@ $(document).ready(function () {
             var cols = $("<div>").addClass("class = 'col-12 m-3'");
             var titleRow = $("<div>").addClass("class = 'row'");
             var titleCol = $("<div>").addClass("class = 'col forecast-city' ");
+
             // append these elements in the same row
             $(row).append(cols, titleRow, titleCol);
             // append elements in the page
@@ -38,36 +35,41 @@ $(document).ready(function () {
             // current date using moment.js
             var currentDate = moment().format('dddd, MMMM Do');
             //console.log(currentDate);
+
             // create html element for the name of the city and date
             var cityNameEl = $("<h3>").addClass("class='mt-3'");
             $(cityNameEl).html(response.name + " (" + currentDate + " )");
             // append element in the tittle element
             $(titleCol).append(cityNameEl);
+
             // get weather Icon and set it in the page
             var weatherIcon = response.weather[0].icon;
             // img html element
             var pictureEl = $("<img>");
             $(pictureEl).attr("src", "https://openweathermap.org/img/wn/" + weatherIcon + "@2x.png")
+            $(pictureEl).attr("alt", "weather icon");
             $(cityNameEl).append(pictureEl);
+
             // get temperature
             var tempDiv = $("<div>").addClass("class = 'row'");
             var temperatureEl = $("<div>").addClass("class = 'col-12'");
             $(temperatureEl).html("Current Temperature: " + kelvinToFahren(response.main.temp) + "°F");
             $(tempDiv).append(temperatureEl);
+
             // get humidity
             var humidDiv = $("<div>").addClass("class = 'row'");
             var humidityEl = $("<div>").addClass("class = 'col-12'");
             $(humidityEl).html("Current Humidity: " + response.main.humidity + "%");
             $(humidDiv).append(humidityEl);
+
             // get wind speed
             var windDiv = $("<div>").addClass("class = 'row'");
             var windEl = $("<div>").addClass("class = 'col-12'");
             $(windEl).html("Current Wind Speed: " + response.wind.speed + "MPH");
             $(windDiv).append(windEl);
-            // $(cols).append(tempDiv, humidDiv, windDiv);
-            //$("#current").append(cols);
+            
             // get UV- index
-            // get langtitude and longtitude
+            // get langitude and longitude
             var lat = response.coord.lat;
             var lon = response.coord.lon;
             // query url that takes latitude and longitude
@@ -109,7 +111,7 @@ $(document).ready(function () {
         });
     };
 
-    // create 5 days weather forecast
+    // create 5 days weather forecast function
     function fiveDaysForecast(cityName) {
         // query url for the 5 days forecast
         var queryURL = "https://api.openweathermap.org/data/2.5/forecast?q=" + cityName + "&appid=" + APIKey;
@@ -128,7 +130,7 @@ $(document).ready(function () {
                     var col = $("<div>").addClass("col-sm-2 ml-1 mt-1");
                     // create cards for each day forecast
                     var card = $("<div>").addClass("card text-white bg-color");
-                    var body = $("<div>").addClass("card-body p-2");
+                    var body = $("<div>").addClass("card-body p-1");
                     // add title with the date
                     var title = $("<h5>").addClass("card-title").text(new Date(response.list[i].dt_txt).toLocaleDateString());
                     // add icon weather
@@ -141,17 +143,17 @@ $(document).ready(function () {
                     // append elements in the page
                     col.append(card.append(body.append(title, img, p1, p2)));
                     $("#five-days .row").append(col);
-                };
-            };
+                }
+            }
         });
-    };
+    }
 
-    // convert the temperature from Kelvin into Fahrenheit
+    // convert the temperature from Kelvin into Fahrenheit function
     function kelvinToFahren(k) {
         return Math.floor((k - 273.15) * 1.8 + 32);
     };
 
-    // create a search History based on inputs from user
+    // create a search History based on inputs from user function
     // add search items in a list
     function createSearchHistory() {
         $(historyEl).html = "";
@@ -167,10 +169,10 @@ $(document).ready(function () {
                 getWeather(searchHistory.value);
                 fiveDaysForecast(searchHistory.value);
             });
-        };
+        }
         // append to the page 
-        $(historyEl).append(historyItem);
-    };
+        $(historyEl).append(historyItem);    
+    }
 
     // Event listener to button search, 
     // adds every seach into the list and local storage
@@ -203,6 +205,6 @@ $(document).ready(function () {
     if (searchHistory.length > 0) {
         getWeather(searchHistory[searchHistory.length - 1]);
         fiveDaysForecast(searchHistory[searchHistory.length - 1])
-    };
+    }
     // end 
 });
